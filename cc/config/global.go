@@ -121,6 +121,31 @@ var (
 		// color codes if it is not running in a terminal.
 		"-fcolor-diagnostics",
 
+		// Warnings from clang-7.0
+		"-Wno-sign-compare",
+
+		// Disable -Winconsistent-missing-override until we can clean up the existing
+		// codebase for it.
+		"-Wno-inconsistent-missing-override",
+
+		// Warnings from clang-10
+		// Nested and array designated initialization is nice to have.
+		"-Wno-c99-designator",
+
+		// Many old files still have GNU designator syntax.
+		"-Wno-gnu-designator",
+
+		// Warnings from clang-12
+		"-Wno-gnu-folding-constant",
+		"-Wno-compound-token-split-by-macro",
+
+		// Calls to the APIs that are newer than the min sdk version of the caller should be
+		// guarded with __builtin_available.
+		"-Wunguarded-availability",
+		// This macro allows the bionic versioning.h to indirectly determine whether the
+		// option -Wunguarded-availability is on or not.
+		"-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__",
+
 		// Turn off FMA which got enabled by default in clang-r445002 (http://b/218805949)
 		"-ffp-contract=off",
 
