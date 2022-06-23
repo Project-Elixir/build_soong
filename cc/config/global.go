@@ -40,9 +40,20 @@ var (
 		"-Wpointer-arith",
 		"-Wunguarded-availability",
 
-		// Warnings treated as errors by default.
-		// See also noOverrideGlobalCflags for errors that cannot be disabled
-		// from Android.bp files.
+		// Make paths in deps files relative
+		"-no-canonical-prefixes",
+
+		"-DNDEBUG",
+		"-UDEBUG",
+
+		"-fno-exceptions",
+		"-Wno-multichar",
+
+		"-O2",
+		"-g",
+		"-fdebug-default-version=5",
+
+		"-fno-strict-aliasing",
 
 		// Using __DATE__/__TIME__ causes build nondeterminism.
 		"-Werror=date-time",
