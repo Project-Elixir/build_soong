@@ -86,6 +86,7 @@ func GetConfig(name string) PathConfig {
 // This list specifies whether a particular binary from $PATH is allowed to be
 // run during the build. For more documentation, see path_interposer.go .
 var Configuration = map[string]PathConfig{
+	"aarch64-linux-gnu-ld":    Allowed,
 	"bash":    Allowed,
 	"bison":   Allowed,
 	"brotli":  Allowed,
@@ -100,7 +101,6 @@ var Configuration = map[string]PathConfig{
 	"expr":    Allowed,
 	"flock":   Allowed,
 	"flex":    Allowed,
-	"flock":   Allowed,
 	"fuser":   Allowed,
 	"getopt":  Allowed,
 	"git":     Allowed,
