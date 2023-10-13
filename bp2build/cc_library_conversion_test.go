@@ -1282,21 +1282,21 @@ cc_library {
     name: "foo_static",
     srcs: ["common.c"],
     product_variables: {
-        malloc_not_svelte: {
-            header_libs: ["malloc_not_svelte_header_lib"],
+        malloc_use_scudo: {
+            header_libs: ["malloc_use_scudo_header_lib"],
         },
     },
     include_build_directory: false,
 }
 
 cc_library {
-    name: "malloc_not_svelte_header_lib",
+    name: "malloc_use_scudo_header_lib",
     bazel_module: { bp2build_available: false },
 }
 `,
 		ExpectedBazelTargets: makeCcLibraryTargets("foo_static", AttrNameToString{
 			"implementation_deps": `select({
-        "//build/bazel/product_variables:malloc_not_svelte": [":malloc_not_svelte_header_lib"],
+        "//build/bazel/product_variables:malloc_use_scudo": [":malloc_use_scudo_header_lib"],
         "//conditions:default": [],
     })`,
 			"srcs_c":                 `["common.c"]`,
