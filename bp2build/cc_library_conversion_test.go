@@ -1176,11 +1176,11 @@ cc_library {
     srcs: ["common.c"],
     whole_static_libs: [
         "arm_whole_static_lib_excludes",
-        "malloc_use_scudo_whole_static_lib_excludes"
+        "malloc_not_svelte_whole_static_lib_excludes"
     ],
     static_libs: [
         "arm_static_lib_excludes",
-        "malloc_use_scudo_static_lib_excludes"
+        "malloc_not_svelte_static_lib_excludes"
     ],
     shared_libs: [
         "arm_shared_lib_excludes",
@@ -1197,12 +1197,12 @@ cc_library {
         },
     },
     product_variables: {
-        malloc_use_scudo: {
-            shared_libs: ["malloc_use_scudo_shared_lib"],
-            whole_static_libs: ["malloc_use_scudo_whole_static_lib"],
+        malloc_not_svelte: {
+            shared_libs: ["malloc_not_svelte_shared_lib"],
+            whole_static_libs: ["malloc_not_svelte_whole_static_lib"],
             exclude_static_libs: [
-                "malloc_use_scudo_static_lib_excludes",
-                "malloc_use_scudo_whole_static_lib_excludes",
+                "malloc_not_svelte_static_lib_excludes",
+                "malloc_not_svelte_whole_static_lib_excludes",
             ],
         },
     },
@@ -1215,12 +1215,12 @@ cc_library {
 }
 
 cc_library {
-    name: "malloc_use_scudo_whole_static_lib",
+    name: "malloc_not_svelte_whole_static_lib",
     bazel_module: { bp2build_available: false },
 }
 
 cc_library {
-    name: "malloc_use_scudo_whole_static_lib_excludes",
+    name: "malloc_not_svelte_whole_static_lib_excludes",
     bazel_module: { bp2build_available: false },
 }
 
@@ -1230,7 +1230,7 @@ cc_library {
 }
 
 cc_library {
-    name: "malloc_use_scudo_static_lib_excludes",
+    name: "malloc_not_svelte_static_lib_excludes",
     bazel_module: { bp2build_available: false },
 }
 
@@ -1240,7 +1240,7 @@ cc_library {
 }
 
 cc_library {
-    name: "malloc_use_scudo_shared_lib",
+    name: "malloc_not_svelte_shared_lib",
     bazel_module: { bp2build_available: false },
 }
 `,
@@ -1249,14 +1249,14 @@ cc_library {
         "//build/bazel/platforms/arch:arm": [],
         "//conditions:default": [":arm_static_lib_excludes_bp2build_cc_library_static"],
     }) + select({
-        "//build/bazel/product_variables:malloc_use_scudo": [],
-        "//conditions:default": [":malloc_use_scudo_static_lib_excludes_bp2build_cc_library_static"],
+        "//build/bazel/product_variables:malloc_not_svelte": [],
+        "//conditions:default": [":malloc_not_svelte_static_lib_excludes_bp2build_cc_library_static"],
     })`,
 			"implementation_dynamic_deps": `select({
         "//build/bazel/platforms/arch:arm": [],
         "//conditions:default": [":arm_shared_lib_excludes"],
     }) + select({
-        "//build/bazel/product_variables:malloc_use_scudo": [":malloc_use_scudo_shared_lib"],
+        "//build/bazel/product_variables:malloc_not_svelte": [":malloc_not_svelte_shared_lib"],
         "//conditions:default": [],
     })`,
 			"srcs_c": `["common.c"]`,
@@ -1264,8 +1264,8 @@ cc_library {
         "//build/bazel/platforms/arch:arm": [],
         "//conditions:default": [":arm_whole_static_lib_excludes_bp2build_cc_library_static"],
     }) + select({
-        "//build/bazel/product_variables:malloc_use_scudo": [":malloc_use_scudo_whole_static_lib_bp2build_cc_library_static"],
-        "//conditions:default": [":malloc_use_scudo_whole_static_lib_excludes_bp2build_cc_library_static"],
+        "//build/bazel/product_variables:malloc_not_svelte": [":malloc_not_svelte_whole_static_lib_bp2build_cc_library_static"],
+        "//conditions:default": [":malloc_not_svelte_whole_static_lib_excludes_bp2build_cc_library_static"],
     })`,
 		}),
 	},
@@ -1282,21 +1282,21 @@ cc_library {
     name: "foo_static",
     srcs: ["common.c"],
     product_variables: {
-        malloc_use_scudo: {
-            header_libs: ["malloc_use_scudo_header_lib"],
+        malloc_not_svelte: {
+            header_libs: ["malloc_not_svelte_header_lib"],
         },
     },
     include_build_directory: false,
 }
 
 cc_library {
-    name: "malloc_use_scudo_header_lib",
+    name: "malloc_not_svelte_header_lib",
     bazel_module: { bp2build_available: false },
 }
 `,
 		ExpectedBazelTargets: makeCcLibraryTargets("foo_static", AttrNameToString{
 			"implementation_deps": `select({
-        "//build/bazel/product_variables:malloc_use_scudo": [":malloc_use_scudo_header_lib"],
+        "//build/bazel/product_variables:malloc_not_svelte": [":malloc_not_svelte_header_lib"],
         "//conditions:default": [],
     })`,
 			"srcs_c":                 `["common.c"]`,
